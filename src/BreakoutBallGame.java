@@ -84,7 +84,6 @@ class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        timer.start();
         if (play) {
             if (new Rectangle(ballPosX, ballPosY, 20, 20).intersects(new Rectangle(paddleX, 550, 100, 8))) {
                 ballDirY = -ballDirY;
@@ -140,15 +139,19 @@ class GamePanel extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) paddleX = Math.min(paddleX + 20, 600);
         if (e.getKeyCode() == KeyEvent.VK_LEFT) paddleX = Math.max(paddleX - 20, 10);
         if (e.getKeyCode() == KeyEvent.VK_ENTER && !play) {
-            if (level > maxLevel) level = 1;
-            play = true;
-            ballPosX = 120;
-            ballPosY = 350;
+            // Reset the game when Enter is pressed after game over or completion
+            level = 1;
             score = 0;
             totalBricks = (level + 2) * 7;
+            map = new MapGenerator(level + 2, 7);
+            paddleX = 310;
+            ballPosX = 120;
+            ballPosY = 350;
+            ballDirX = -1;
+            ballDirY = -2;
+            play = true;
             delay = Math.max(3, 10 - level * 2);
             timer.setDelay(delay);
-            map = new MapGenerator(level + 2, 7);
             repaint();
         }
     }
@@ -179,6 +182,6 @@ class MapGenerator {
                     g.drawRect(j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight);
                 }
     }
-    public void setBrickValue(int value, int row, int col) { 
-      map[row][col] = value; }
+
+    public void setBrickValue(int value, int row, int col) { map[row][col] = value; }
 }
