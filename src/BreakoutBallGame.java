@@ -36,7 +36,7 @@ class GamePanel extends JPanel implements KeyListener, ActionListener {
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
         
-        delay = Math.max(3, 10 - level * 2); // Decrease delay as level increases
+        delay = Math.max(3, 10 - level * 2); 
         timer = new Timer(delay, this);
         timer.start();
     }
